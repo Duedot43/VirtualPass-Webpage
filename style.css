@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=Zilla+Slab&display=swap');
+
+/* Regular setting */
+:root {
+    --body-bg: #dadada;
+    --table-bg: white;
+    --body-color: #000000;
+}
+
+/* Dark setting */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --table-bg: #27434b;
+        --body-bg: #233035;
+        --body-color: #FFFFFF;
+    }
+}
+
+body {
+    font-family: "Zilla Slab", Arial, Helvetica, sans-serif;
+    color: #545d5eda;
+    background: var(--body-bg);
+    color: var(--body-color);
+
+}
+
+table {
+    margin: 0 auto;
+    max-width: 600px;
+    background: white;
+    border-radius: 7px;
+    box-shadow: 5px 5px rgb(82, 99, 102);
+    padding: 7px;
+    background: var(--table-bg);
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+
+li {
+    float: left;
+}
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+/* Change the link color to #111 (black) on hover */
+li a:hover {
+    background-color: rgb(34, 32, 151);
+}
