@@ -17,6 +17,7 @@ const readFileAsText = function () {
         const text = fileLoadedEvent.target.result
         var backJson = atob(text);
         window.backArr = JSON.parse(backJson);
+        document.write('<!DOCTYPE html><head><link href="/VirtualPass-Webpage/style.css" rel="stylesheet" type="text/css" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>VirtualPass System Editor</title></head>');
         document.write("Configuration options<br>");
         document.write("Admin username: <input type='text' id='config-admin_uname' value='" + window.backArr['config']['administrator_portal']['admin_uname'] + "' ></input><br>");
         document.write("Admin password: <input type='text' id='config-admin_passwd' value='" + window.backArr['config']['administrator_portal']['admin_passwd'] + "' ></input><br><br>");
