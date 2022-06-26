@@ -32,19 +32,20 @@ getParameters = () => {
     // Returning the map of GET parameters
     return map
 }
-var gets = getParameters();
-if (typeof gets.get('file') !== 'undefined') {
-    var backJson = atob(gets.get('file'));
+window.gets = getParameters();
+if (typeof window.gets.get('file') !== 'undefined') {
+    var backJson = atob(window.gets.get('file'));
     window.backArr = JSON.parse(backJson);
     disp_data();
 }
 function disp_data() {
-    var ids = '{"config-admin_uname":{"section":"administrator_portal"}, "config-admin_passwd":{"section":"administrator_portal"}, "config-teacher_uname":{"section":"teacher_portal"}, "config-teacher_passwd":{"section":"teacher_portal"}, "config-api_uname":{"section":"api_options"}, "config-api_passwd":{"section":"api_options"}, "config-snapshot_time_seconds":{"section":"snapshot_options"}}';
+    var ids = '{"config-admin_uname":{"section":"administrator_portal"}, "config-admin_passwd":{"section":"administrator_portal"}, "config-override_automatic_domain_name":{"section":"domain_overrides"}, "config-domain_name":{"section":"domain_overrides"}, "config-teacher_uname":{"section":"teacher_portal"}, "config-teacher_passwd":{"section":"teacher_portal"}, "config-api_uname":{"section":"api_options"}, "config-api_passwd":{"section":"api_options"}, "config-snapshot_time_seconds":{"section":"snapshot_options"}}';
     window.entry_id = JSON.parse(ids);
     document.write('<!DOCTYPE html><head><link href="/VirtualPass-Webpage/style.css" rel="stylesheet" type="text/css" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>VirtualPass System Editor</title></head>');
     document.write("Configuration options<br>");
     document.write("Admin username: <input type='text' id='config-admin_uname' value='" + window.backArr['config']['administrator_portal']['admin_uname'] + "' ></input><br>");
     document.write("Admin password: <input type='text' id='config-admin_passwd' value='" + window.backArr['config']['administrator_portal']['admin_passwd'] + "' ></input><br><br>");
+    document.write("Domain enable: <input type='text' id='config-override_automatic_domain_name' value='" + window.backArr['config']['domain_overrides']['override_automatic_domain_name'] + "' ></input><br><br>");
     document.write("Domain name: <input type='text' id='config-domain_name' value='" + window.backArr['config']['domain_overrides']['domain_name'] + "' ></input><br><br>");
     document.write("Teacher username: <input type='text' id='config-teacher_uname' value='" + window.backArr['config']['teacher_portal']['teacher_uname'] + "' ></input><br>");
     document.write("Teacher password: <input type='text' id='config-teacher_passwd' value='" + window.backArr['config']['teacher_portal']['teacher_passwd'] + "' ></input><br><br>");
@@ -57,6 +58,9 @@ function disp_data() {
         document.write(ck_plugin(plugins[pl_name]));
     }
     document.write("<input id='submit' type='button' value='Export file' onclick='exportFile()' ></input>")
+    if (typeof window.gets.get('file') !== 'undefined' && window.backArr['config']['domain_overrides']['override_automatic_domain_name'] == 1){
+        document.write("<input type='button' value='Apply changes' onclick='location=\"https://" + window.backArr['config']['domain_overrides']['domain_name'] + "/administrator/db_restore.php?data=" + btoa(JSON.stringify(window.backArr)) + "\"' ></input>")
+    }
 }
 
 function ck_plugin(plugin) {
