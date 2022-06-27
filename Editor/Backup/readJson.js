@@ -58,11 +58,9 @@ function disp_data() {
         document.write(ck_plugin(plugins[pl_name]));
     }
     document.write("<input id='submit' type='button' value='Export file' onclick='exportFile()' ></input>")
-    while (true){
-    	if (typeof window.gets.get('file') !== 'undefined' && window.backArr['config']['domain_overrides']['override_automatic_domain_name'] == 1){
-        	document.write("<input type='button' value='Apply changes' onclick='location=\"https://" + window.backArr['config']['domain_overrides']['domain_name'] + "/administrator/db_restore.php?data=" + btoa(JSON.stringify(window.backArr)) + "\"' ></input>")
-    	}
-	}
+    if (typeof window.gets.get('file') !== 'undefined' && window.backArr['config']['domain_overrides']['override_automatic_domain_name'] == 1){
+        document.write("<input type='button' value='Apply changes' onclick='location=\"https://" + window.backArr['config']['domain_overrides']['domain_name'] + "/administrator/db_restore.php?data=" + btoa(JSON.stringify(window.backArr)) + "\"' ></input>")
+    }
 }
 
 function ck_plugin(plugin) {
