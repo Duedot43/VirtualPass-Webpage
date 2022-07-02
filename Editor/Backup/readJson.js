@@ -45,7 +45,7 @@ function disp_data() {
     document.write("Configuration options<br>");
     document.write("Admin username: <input type='text' id='config-admin_uname' value='" + window.backArr['config']['administrator_portal']['admin_uname'] + "' ></input><br>");
     document.write("Admin password: <input type='text' id='config-admin_passwd' value='" + window.backArr['config']['administrator_portal']['admin_passwd'] + "' ></input><br><br>");
-    document.write("Domain enable: <input type='text' id='config-override_automatic_domain_name' value='" + window.backArr['config']['domain_overrides']['override_automatic_domain_name'] + "' ></input><br><br>");
+    document.write("Domain enable: <input type='text' onkeyup='ck_domain()' id='config-override_automatic_domain_name' value='" + window.backArr['config']['domain_overrides']['override_automatic_domain_name'] + "' ></input><br><br>");
     document.write("Domain name: <input type='text' id='config-domain_name' value='" + window.backArr['config']['domain_overrides']['domain_name'] + "' ></input><br><br>");
     document.write("Teacher username: <input type='text' id='config-teacher_uname' value='" + window.backArr['config']['teacher_portal']['teacher_uname'] + "' ></input><br>");
     document.write("Teacher password: <input type='text' id='config-teacher_passwd' value='" + window.backArr['config']['teacher_portal']['teacher_passwd'] + "' ></input><br><br>");
@@ -57,12 +57,23 @@ function disp_data() {
     for (pl_name in plugins) {
         document.write(ck_plugin(plugins[pl_name]));
     }
-    document.write("<input id='submit' type='button' value='Export file' onclick='exportFile()' ></input>")
-    if (typeof window.gets.get('file') !== 'undefined' && window.backArr['config']['domain_overrides']['override_automatic_domain_name'] == 1){
-        document.write("<input type='button' value='Apply changes' onclick='location=\"https://" + window.backArr['config']['domain_overrides']['domain_name'] + "/administrator/db_restore.php?data=" + btoa(JSON.stringify(window.backArr)) + "\"' ></input>")
+    document.write("<input id='submit' type='button' value='Export file' onclick='exportFile()' ></input>");
+    document.write("<input type='button' value='Apply changes' id='apply' onclick='redirect()' ></input>")
+    ck_domain();
+    
+}
+function ck_domain(){
+    exportFile(false);
+    if (document.getElementById('config-override_automatic_domain_name').value != "1"){
+        document.getElementById('apply').disabled = true;
+    } else{
+        document.getElementById('apply').disabled = false;
     }
 }
-
+function redirect(){
+    exportFile(false);
+    window.location.replace("https://" + document.getElementById('config-domain_name').value + "/administrator/db_restore.php?file=" + btoa(JSON.stringify(window.backArr)));
+}
 function ck_plugin(plugin) {
     if (typeof window.backArr['plugins'][plugin] == 'undefined' || window.backArr['plugins'][plugin] == 0) {
         //make install button
@@ -80,13 +91,15 @@ function togglePlugin(plugin, unin) {
         window.backArr['plugins'][plugin] = 0;
     }
 }
-function exportFile() {
+function exportFile(dld = true) {
     for (id in window.entry_id) {
         var config_var = id.split("-");
         var section = window.entry_id[id]["section"]
         window.backArr['config'][section][config_var[1]] = document.getElementById(id).value;
     }
-    download("new_backup.vp", btoa(JSON.stringify(window.backArr)));
+    if (dld){
+        download("new_backup.vp", btoa(JSON.stringify(window.backArr)));
+    }
 }
 function download(filename, textInput) {
 
